@@ -22,7 +22,9 @@ An agentic AI research pipeline that automates end-to-end research on any topic 
 
 | | |
 |---|---|
-| ![Screenshot 1](assets/screenshot1.png) | ![Screenshot 2](assets/screenshot2.png) |
+| <img width="1509" height="861" alt="Screenshot 2026-08-12 191209" src="https://github.com/user-attachments/assets/3bf412c3-32e4-4fb6-aba6-cd1ec09d1ac3" />
+ |<img width="1503" height="557" alt="Screenshot 2026-08-12 191224" src="https://github.com/user-attachments/assets/07e4db89-c840-4508-9bfa-400d0faeef45" />
+ |
 
 ## Project Structure
 
