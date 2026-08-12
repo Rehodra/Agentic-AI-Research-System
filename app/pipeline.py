@@ -1,5 +1,12 @@
 from agents import build_search_agent, build_scrape_agent, writer_chain, critic_chain
-from rich import print
+from cli_formatter import (
+    print_pipeline_start,
+    print_step,
+    print_search_results,
+    print_scraped_content,
+    print_research_report,
+    print_critique,
+)
 
 def run_research_pipeline(topic: str) -> dict:
 
@@ -8,19 +15,19 @@ def run_research_pipeline(topic: str) -> dict:
     Run the research pipeline for a given topic.
     This includes searching, scraping, writing, and critiquing.
     """
-    print(f"[bold green]Starting research pipeline for topic:[/bold green] {topic}")
+    print_pipeline_start(topic)
     # Step 1: Search for information
-    print("[bold blue]Step 1: Search Agent working...[/bold blue]")
+    print_step(1, "Search Agent")
     search_agent = build_search_agent()
     search_results = search_agent.invoke({
         "messages":[("user", f"Search for recent and reliable information on the topic: {topic}")]
     })
 
     state["search_results"] = search_results["messages"][-1].content
-    print(f"[bold green]Search Results:[/bold green]\n{state['search_results']}")
+    print_search_results(state['search_results'])
 
 # Step 2: Scrape URLs for deeper reading
-    print ("\n[bold blue]Step 2: Scrape Agent working...[/bold blue]")
+    print_step(2, "Scrape Agent")
 
     reader_agent = build_scrape_agent()
     reader_result = reader_agent.invoke({
@@ -32,10 +39,10 @@ def run_research_pipeline(topic: str) -> dict:
     })
 
     state["scraped_content"] = reader_result["messages"][-1].content
-    print(f"[bold green]Scraped Content:[/bold green]\n{state['scraped_content']}")
+    print_scraped_content(state['scraped_content'])
 
     # Step 3: Write a research report
-    print("\n[bold blue]Step 3: Writer Chain working...[/bold blue]")
+    print_step(3, "Writer Chain")
 
     research_combined = f"Search Results:\n{state['search_results']}\n\nScraped Content:\n{state['scraped_content']}" #combined research results and scraped content
 
@@ -46,15 +53,15 @@ def run_research_pipeline(topic: str) -> dict:
 
     state["research_report"] = writer_result
 
-    print(f"[bold green]Research Report:[/bold green]\n{state['research_report']}")
+    print_research_report(state['research_report'])
 
     # Step 4: Critique the research report
-    print("\n[bold blue]Step 4: Critic Chain working...[/bold blue]")
+    print_step(4, "Critic Chain")
     critic_result = critic_chain.invoke({
         "report": state["research_report"]
     })
     state["critique"] = critic_result
-    print(f"[bold green]Critique:[/bold green]\n{state['critique']}")
+    print_critique(state['critique'])
 
 
     return state
